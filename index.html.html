@@ -1,0 +1,518 @@
+<?DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Toolman Lawn Care, Yard Work & Power Washing</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+    }
+
+    .topbar {
+        background: #0b1a2b;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menu {
+        display: flex;
+        gap: 25px;
+    }
+
+    .menu-item {
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .container {
+        padding: 30px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    button {
+        padding: 12px 20px;
+        background: #0078ff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .item {
+        background: white;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .item button {
+        background: #28a745;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    #popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        width: 350px;
+        display: none;
+        box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+    }
+
+    #popup button {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    #adminPage {
+        padding: 30px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <div style="font-size: 22px;">Toolman Lawn Care, Yard Work & Power Washing</div>
+    <div class="menu">
+        <div class="menu-item" onclick="showPage('signin')">Sign In</div>
+        <div class="menu-item" onclick="showPage('home')">Home</div>
+        <div class="menu-item" onclick="showPage('services')">Services</div>
+        <div class="menu-item" onclick="showPage('pricing')">Pricing</div>
+        <div class="menu-item" onclick="showPage('contact')">Contact</div>
+        <div class="menu-item" onclick="showPage('checkout')">Checkout</div>
+        <div class="menu-item" id="adminTab" style="display:none;" onclick="showPage('adminPage')">Admin</div>
+    </div>
+</div>
+
+<!-- SIGN IN -->
+<div id="signin" class="container">
+    <h2>Sign In</h2>
+    <input id="loginUser" placeholder="Username">
+    <input id="loginPass" type="password" placeholder="Password">
+    <button onclick="login()">Sign In</button>
+    <h3>New User?</h3>
+    <button onclick="showPage('signup')">Create Account</button>
+</div>
+
+<!-- SIGN UP -->
+<div id="signup" class="container hidden">
+    <h2>Create Account</h2>
+    <input id="newUser" placeholder="Username">
+    <input id="newPass" type="password" placeholder="Password">
+    <input id="newEmail" placeholder="Email">
+    <input id="newPhone" placeholder="Phone Number">
+    <button onclick="createAccount()">Create Account</button>
+</div>
+
+<!-- HOME -->
+<div id="home" class="container hidden">
+    <h2>Welcome to Toolman Lawn Care</h2>
+    <p>Professional mowing, trimming, cleanup, power washing, and full yard work services.</p>
+    <p>Call or text: <strong>720-485-0308</strong></p>
+    <p>Email: <strong>toolmanfpv@gmail.com</strong></p>
+</div>
+
+<!-- SERVICES -->
+<div id="services" class="container hidden">
+    <h2>Select Services</h2>
+
+    <script>
+        const serviceList = [
+            "Basic Lawn Mowing",
+            "Full Yard Cleanup",
+            "Weed Removal",
+            "Hedge Trimming",
+            "Leaf Cleanup",
+            "Snow Shoveling",
+            "Tree Branch Removal",
+            "Bush Shaping",
+            "Garden Bed Cleanup",
+            "Mulch Spreading",
+            "Gutter Cleaning",
+            "Fence Line Clearing",
+            "Trash Removal",
+            "Overgrowth Clearing",
+            "Small Tree Cutting",
+            "Edging & Trimming",
+            "Grass Reseeding",
+            "Soil Leveling",
+            "Rock Bed Cleanup",
+            "Yard Waste Hauling",
+            "Sod Installation",
+            "Lawn Aeration",
+            "Fertilizer Spreading",
+            "Tree Stump Grinding",
+            "Sprinkler Repair",
+            "Sprinkler Blowout",
+            "Garden Planting",
+            "Bush Removal",
+            "Dirt Moving",
+            "Gravel Spreading",
+            "Fence Repair",
+            "Patio Cleaning",
+            "Driveway Edging",
+            "Weed Barrier Installation",
+            "Power Washing – Driveway",
+            "Power Washing – Sidewalk",
+            "Power Washing – House Exterior",
+            "Power Washing – Deck / Patio",
+            "Power Washing – Fence",
+            "Power Washing – Garage Door",
+            "Power Washing – Gutters (Exterior)",
+            "Power Washing – Siding Deep Clean"
+        ];
+    </script>
+
+    <div id="serviceContainer"></div>
+    <button onclick="showPage('checkout')">Go to Checkout</button>
+</div>
+
+<div id="popup">
+    <h3 id="popupTitle"></h3>
+    <input id="sqft" type="number" placeholder="Square Feet (optional)">
+    <select id="yardSize">
+        <option value="">Select Area Size</option>
+        <option value="Small">Small</option>
+        <option value="Medium">Medium</option>
+        <option value="Large">Large</option>
+        <option value="XL">XL</option>
+    </select>
+    <select id="jobSize">
+        <option value="">Estimated Job Size</option>
+        <option value="Quick">Quick (30 min)</option>
+        <option value="Standard">Standard (1 hr)</option>
+        <option value="Extended">Extended (2 hrs)</option>
+        <option value="Major">Major (3+ hrs)</option>
+    </select>
+    <input id="rate" type="number" placeholder="Hourly Rate ($)">
+    <input id="notes" type="text" placeholder="Extra Notes">
+    <button onclick="addService()">Add to Checkout</button>
+    <button style="background:#555;" onclick="closePopup()">Cancel</button>
+</div>
+
+<!-- PRICING -->
+<div id="pricing" class="container hidden">
+    <h2>Pricing Estimates (Calmer)</h2>
+    <p>Small Area — $15–$25</p>
+    <p>Medium Area — $25–$40</p>
+    <p>Large Area — $40–$60</p>
+    <p>XL Area — $60–$100</p>
+    <p>Sq Ft Pricing — $0.04 per sq ft</p>
+    <p>Hourly Rate — Based on your selection</p>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="container hidden">
+    <h2>Contact Us</h2>
+    <p>Phone: <strong>720-485-0308</strong></p>
+    <p>Email: <strong>toolmanfpv@gmail.com</strong></p>
+    <p>discord <strong>toolmanfpv2 </strong></p>
+    <button onclick="emailTheo()">Email Theo</button>
+</div>
+
+<!-- CHECKOUT -->
+<div id="checkout" class="container hidden">
+    <h2>Checkout</h2>
+    <ul id="checkoutItems"></ul>
+    <h3>Your Info</h3>
+    <input type="text" id="name" placeholder="Full Name">
+    <input type="text" id="address" placeholder="Home Address">
+    <input type="text" id="phone" placeholder="Phone Number">
+    <button onclick="sendOrder()">Send Order</button>
+</div>
+
+<!-- ADMIN PAGE -->
+<div id="adminPage" class="container hidden">
+    <h2>Admin Dashboard</h2>
+    <div id="adminContent"></div>
+    <div class="card">
+    <h3>Employee Access</h3>
+    <p>This area is for employees only. Unauthorized access is not allowed.</p>
+
+    <button onclick="window.location.href='https://toolmanfpv2.github.io/business-tracker-site/'">
+        Go to Employee Dashboard
+    </button>
+</div>
+</div>
+
+<script>
+    let selectedItems = [];
+    let currentService = "";
+    let currentUser = null;
+
+    window.onload = () => {
+        const container = document.getElementById("serviceContainer");
+        serviceList.forEach(service => {
+            container.innerHTML += `
+                <div class="item">
+                    <span>${service}</span>
+                    <button onclick="openPopup('${service}')">Add</button>
+                </div>
+            `;
+        });
+    };
+
+    function login() {
+        const u = document.getElementById("loginUser").value;
+        const p = document.getElementById("loginPass").value;
+
+        const users = JSON.parse(localStorage.getItem("users") || "{}");
+
+        if (users[u] && users[u].password === p) {
+            currentUser = u;
+            alert("Signed in as " + u);
+
+            if (u === "toolmanfpv" && p === "1234") {
+                document.getElementById("adminTab").style.display = "block";
+            }
+
+            showPage("home");
+        } else {
+            alert("Invalid username or password");
+        }
+    }
+
+    function createAccount() {
+        const u = document.getElementById("newUser").value;
+        const p = document.getElementById("newPass").value;
+        const e = document.getElementById("newEmail").value;
+        const ph = document.getElementById("newPhone").value;
+
+        const users = JSON.parse(localStorage.getItem("users") || "{}");
+
+        if (users[u]) {
+            alert("Username already exists");
+            return;
+        }
+
+        users[u] = {
+            password: p,
+            email: e,
+            phone: ph,
+            newUserBonus: true
+        };
+
+        localStorage.setItem("users", JSON.stringify(users));
+
+        alert("Account created! You get FREE 0.25 hr Power Washing!");
+        currentUser = u;
+
+        selectedItems.push({
+            service: "FREE BONUS: 0.25 hr Power Washing",
+            sqft: "",
+            yardSize: "",
+            jobSize: "Quick",
+            rate: 0,
+            notes: "New user reward",
+            price: 0
+        });
+
+        showPage("home");
+    }
+
+    function openPopup(service) {
+        currentService = service;
+        document.getElementById("popupTitle").innerText = service;
+        document.getElementById("popup").style.display = "block";
+    }
+
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+
+    function calculatePrice(sqft, yardSize, jobSize, rate) {
+        if (sqft) return sqft * 0.04;
+        if (yardSize) {
+            const yardPrices = { Small: 20, Medium: 30, Large: 45, XL: 75 };
+            return yardPrices[yardSize];
+        }
+        if (rate && jobSize) {
+            const hours = { Quick: 0.5, Standard: 1, Extended: 2, Major: 3 };
+            return rate * hours[jobSize];
+        }
+        return 30;
+    }
+
+    function addService() {
+        const sqft = document.getElementById("sqft").value;
+        const yardSize = document.getElementById("yardSize").value;
+        const jobSize = document.getElementById("jobSize").value;
+        const rate = document.getElementById("rate").value;
+        const notes = document.getElementById("notes").value;
+
+        const price = calculatePrice(sqft, yardSize, jobSize, rate);
+
+        selectedItems.push({
+            service: currentService,
+            sqft,
+            yardSize,
+            jobSize,
+            rate,
+            notes,
+            price
+        });
+
+        closePopup();
+        alert(currentService + " added!");
+    }
+
+    function updateCheckout() {
+        const list = document.getElementById("checkoutItems");
+        list.innerHTML = "";
+
+        selectedItems.forEach(item => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <strong>${item.service}</strong><br>
+                Sq Ft: ${item.sqft || "N/A"}<br>
+                Area Size: ${item.yardSize || "N/A"}<br>
+                Job Size: ${item.jobSize || "N/A"}<br>
+                Hourly Rate: ${item.rate ? "$" + item.rate : "N/A"}<br>
+                Notes: ${item.notes || "None"}<br>
+                <strong>Estimated Price: $${item.price.toFixed(2)}</strong>
+            `;
+            list.appendChild(li);
+        });
+    }
+
+    function emailTheo() {
+        window.location.href = "mailto:toolmanfpv@gmail.com";
+    }
+
+    function saveOrderToDatabase(order) {
+        let db = JSON.parse(localStorage.getItem("ordersDB") || "[]");
+        db.push(order);
+        localStorage.setItem("ordersDB", JSON.stringify(db));
+    }
+
+    function sendOrder() {
+        const name = document.getElementById("name").value;
+        const address = document.getElementById("address").value;
+        const phone = document.getElementById("phone").value;
+
+        let order = {
+            customer: currentUser || "Guest",
+            name,
+            address,
+            phone,
+            items: selectedItems,
+            total: selectedItems.reduce((t, i) => t + i.price, 0),
+            date: new Date().toLocaleString()
+        };
+
+        saveOrderToDatabase(order);
+
+        let body = `New Yard Work & Power Washing Order\n\nCustomer Info:\nName: ${name}\nAddress: ${address}\nPhone: ${phone}\n\nServices:\n`;
+
+        selectedItems.forEach(item => {
+            body += `
+${item.service}
+Sq Ft: ${item.sqft || "N/A"}
+Area Size: ${item.yardSize || "N/A"}
+Job Size: ${item.jobSize || "N/A"}
+Hourly Rate: ${item.rate ? "$" + item.rate : "N/A"}
+Notes: ${item.notes || "None"}
+Estimated Price: $${item.price.toFixed(2)}
+
+`;
+        });
+
+        window.location.href = `mailto:toolmanfpv@gmail.com?subject=New Yard Work & Power Washing Order&body=${encodeURIComponent(body)}`;
+    }
+
+    function loadAdminPage() {
+        const adminDiv = document.getElementById("adminContent");
+        adminDiv.innerHTML = "";
+
+        let db = JSON.parse(localStorage.getItem("ordersDB") || "[]");
+
+        if (db.length === 0) {
+            adminDiv.innerHTML = "<p>No orders yet.</p>";
+            return;
+        }
+
+        let totalRevenue = db.reduce((t, o) => t + o.total, 0);
+        let totalJobs = db.length;
+        let avgPrice = totalRevenue / totalJobs;
+
+        adminDiv.innerHTML += `
+            <h3>Statistics</h3>
+            <p><strong>Total Revenue:</strong> $${totalRevenue.toFixed(2)}</p>
+            <p><strong>Total Jobs:</strong> ${totalJobs}</p>
+            <p><strong>Average Job Price:</strong> $${avgPrice.toFixed(2)}</p>
+            <hr>
+            <h3>All Orders</h3>
+        `;
+
+        db.forEach((order, index) => {
+            let orderHTML = `
+                <div style="background:#fff;padding:15px;margin-bottom:10px;border-radius:8px;">
+                    <strong>Customer:</strong> ${order.customer}<br>
+                    <strong>Name:</strong> ${order.name}<br>
+                    <strong>Address:</strong> ${order.address}<br>
+                    <strong>Phone:</strong> ${order.phone}<br>
+                    <strong>Date:</strong> ${order.date}<br>
+                    <strong>Total:</strong> $${order.total.toFixed(2)}<br><br>
+                    <strong>Services:</strong><br>
+            `;
+
+            order.items.forEach(item => {
+                orderHTML += `
+                    - ${item.service} ($${item.price.toFixed(2)})<br>
+                `;
+            });
+
+            orderHTML += `
+                    <br>
+                    <button onclick="deleteOrder(${index})" style="background:#c62828;">Delete Order</button>
+                </div>
+            `;
+
+            adminDiv.innerHTML += orderHTML;
+        });
+    }
+
+    function deleteOrder(index) {
+        let db = JSON.parse(localStorage.getItem("ordersDB") || "[]");
+        db.splice(index, 1);
+        localStorage.setItem("ordersDB", JSON.stringify(db));
+        loadAdminPage();
+    }
+
+    function showPage(page) {
+        document.querySelectorAll('.container').forEach(div => div.classList.add('hidden'));
+        document.getElementById(page).classList.remove('hidden');
+
+        if (page === 'checkout') updateCheckout();
+        if (page === 'adminPage') loadAdminPage();
+    }
+</script>
+
+</body>
+</html>
