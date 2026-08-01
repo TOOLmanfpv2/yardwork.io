@@ -210,10 +210,11 @@
         <option value="Extended">Extended (2 hrs)</option>
         <option value="Major">Major (3+ hrs)</option>
     </select>
-    <input id="rate" type="number" placeholder="Hourly Rate ($)">
-    <input id="notes" type="text" placeholder="Extra Notes">
-    <button onclick="addService()">Add to Checkout</button>
-    <button style="background:#555;" onclick="closePopup()">Cancel</button>
+    <p>Hourly rate is 10–40 dollars</p>
+
+<input id="notes" type="text" placeholder="Extra Notes">
+<button onclick="addService()">Add to Checkout</button>
+<button style="background:#555;" onclick="closePopup()">Cancel</button>
 </div>
 
 <!-- PRICING -->
@@ -251,14 +252,15 @@
 <div id="adminPage" class="container hidden">
     <h2>Admin Dashboard</h2>
     <div id="adminContent"></div>
-    <div class="card">
-    <h3>Employee Access</h3>
-    <p>This area is for employees only. Unauthorized access is not allowed.</p>
 
-    <button onclick="window.location.href='https://biz-flow-copy-6e8c85be.base44.app/?is_new_user=true/'">
-        Go to Employee Dashboard
-    </button>
-</div>
+    <div class="card">
+        <h3>Employee Access</h3>
+        <p>This area is for employees only. Unauthorized access is not allowed.</p>
+
+        <button onclick="window.location.href='https://biz-flow-copy-6e8c85be.base44.app/?is_new_user=true'">
+            Go to Employee Dashboard
+        </button>
+    </div>
 </div>
 
 <script>
